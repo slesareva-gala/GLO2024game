@@ -1,4 +1,4 @@
-// Урок 6 Область видимости и замыкание. Основное задание
+// Урок 6 Область видимости и замыкание. Усложненное задание
 
 "use strict";
 
@@ -17,6 +17,7 @@ const isNumber = function (str) {
 // игра угадайка число 
 const gameRiddle = () => {
     let secretNumber = getRandomInt(1, 100);
+    let countAttempts = 10;
     // оставила для проверки задания
     console.log('secretNumber=', secretNumber);
 
@@ -30,10 +31,12 @@ const gameRiddle = () => {
         } else if (!isNumber(answer) || +answer < 1 || +answer > 100) {
             goRiddle("Введите целое число от 1 до 100 :");
         } else if (+answer === secretNumber) {
-            alert("Поздравляю, Вы угадали !!!");
-
+            if (confirm("Поздравляю, Вы угадали !!!\nХотели бы сыграть еще?")) gameRiddle();
+        } else if (countAttempts === 1) {
+            if (confirm("Попытки закончились, хотите сыграть еще?")) gameRiddle();
         } else {
-            goRiddle(`Загаданное число ${(+answer > secretNumber ? "меньше" : "больше") + " " + answer.trim()} .\nВедите новый вариант :`);
+            alert(`Загаданное число ${(+answer > secretNumber ? "меньше" : "больше") + " " + answer.trim()} , осталось попыток ${--countAttempts} .`);
+            goRiddle(`Ведите новый вариант числа от 1 до 100 :`);
         }
     }
     // стратуем

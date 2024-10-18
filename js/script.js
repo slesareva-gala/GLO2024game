@@ -1,33 +1,29 @@
-// Урок 10 Работа с DOM
-"use strict"
+// Урок 11 Обработка событий
 
-const books = document.querySelector('.books')
-let bookList, node
+"use strict";
 
-const sortChilds = (nodes, blockName = el => el.innerText) => {
-    const childs = [...nodes].map(child => (
-        {
-            id: (blockName(child).match(/[0-9A-Z]/) || [" "])[0].charCodeAt(0),
-            child
-        }
-    ))
-    childs.sort((a, b) => (a.id - b.id))
-    return childs.map(child => child.child)
+const btn = document.getElementById("btn")
+const elRange = document.getElementById("range")
+const elRandeSpan = document.getElementById("range-span")
+const elText = document.getElementById("text")
+const elSquare = document.getElementById("square")
+const elCircle = document.getElementById("circle")
+
+
+btn.onclick = () => {
+    elSquare.style.backgroundColor = elText.value.trim()
 }
 
-bookList = sortChilds(books.querySelectorAll('.book'), el => el.querySelector('a').innerText)
-books.append(...bookList)
+elRange.addEventListener("input", (e) => {
+    const proc = e.target.value
 
-document.body.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.7)), url(./image/you-dont-know-js.jpg)"
+    elRandeSpan.innerText = proc
+    elCircle.style.width = `${proc}%`
+    elCircle.style.height = `${proc}%`
+})
 
-node = bookList[2].querySelector("a")
-node.innerText = node.innerText.replace('Пропопипы', 'Прототипы')
-
-document.querySelector(".adv").remove()
-
-bookList[1].querySelector('ul').append(...sortChilds(bookList[1].querySelectorAll('li')))
-bookList[4].querySelector('ul').append(...sortChilds(bookList[4].querySelectorAll('li')))
-
-bookList[5].querySelector('ul').lastElementChild.insertAdjacentHTML('beforebegin', '<li>Глава 8: За пределами ES6</li>')
-
+document.getElementById("e_btn").style.display = "none"
+elRange.value = 0
+elCircle.style.width = "0%"
+elCircle.style.height = "0%"
 

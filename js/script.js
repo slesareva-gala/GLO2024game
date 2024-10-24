@@ -7,17 +7,15 @@ const headerInput = document.querySelector('.header-input')
 const todoList = document.querySelector('.todo-list')
 const todoCompleted = document.querySelector('.todo-completed')
 
-const storage = {
-    is: localStorage.getItem('toDoData') ? true : false,
-    set: (arr) => localStorage.setItem('toDoData', JSON.stringify(arr)),
-    get: () => storage.is ? JSON.parse(localStorage.getItem('toDoData')) : []
-}
+const setData = (key, value) => localStorage.setItem(key, JSON.stringify(value))
+const getData = key => JSON.parse(localStorage.getItem(key)) || []
+
 
 const render = () => {
     todoList.innerHTML = ''
     todoCompleted.innerHTML = ''
 
-    storage.set(toDoData)
+    setData(keyData, toDoData)
 
     toDoData.forEach((item, index) => {
         const li = document.createElement('li')
@@ -45,20 +43,21 @@ const render = () => {
 todoControl.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    const newToDo = {
-        text: headerInput.value.trim().replace(/(  )+/g, " "),
-        completed: false
-    }
+    const text = headerInput.value.trim().replace(/(  )+/g, " ");
+    headerInput.value = ''   // здесь, т.к. для строки из пробелов -> в начальное
 
-    if (newToDo.text) {
-        toDoData.push(newToDo)
-        headerInput.value = ''
+    if (text) {
+        toDoData.push({
+            text: text,
+            completed: false
+        })
 
         render()
     }
 })
 
-const toDoData = storage.get()
+const keyData = 'toDo'
+const toDoData = getData(keyData)
 render()
 
 
